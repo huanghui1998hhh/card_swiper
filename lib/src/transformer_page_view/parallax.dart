@@ -4,8 +4,8 @@ import 'transformer_page_view.dart';
 
 // typedef PaintCallback = Function(Canvas canvas, Size size);
 
-class ColorPainter extends CustomPainter {
-  ColorPainter(this._paint, this.info, this.colors);
+class _ColorPainter extends CustomPainter {
+  _ColorPainter(this._paint, this.info, this.colors);
 
   final Paint _paint;
   final TransformInfo info;
@@ -67,7 +67,7 @@ class ColorPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(ColorPainter oldDelegate) {
+  bool shouldRepaint(_ColorPainter oldDelegate) {
     return oldDelegate.info != info;
   }
 }
@@ -78,7 +78,7 @@ class _ParallaxColorState extends State<ParallaxColor> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: ColorPainter(paint, widget.info, widget.colors),
+      painter: _ColorPainter(paint, widget.info, widget.colors),
       child: widget.child,
     );
   }

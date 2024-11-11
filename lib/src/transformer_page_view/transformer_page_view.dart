@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
+import '../../card_swiper.dart';
 import 'index_controller.dart';
 
 ///
@@ -15,9 +16,6 @@ import 'index_controller.dart';
 ///
 ///
 ///
-
-const int kMaxValue = 2000000000;
-const int kMiddleValue = 1000000000;
 
 ///  Default auto play transition duration (in millisecond)
 const int kDefaultTransactionDuration = 300;

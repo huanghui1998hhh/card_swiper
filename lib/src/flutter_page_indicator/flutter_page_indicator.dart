@@ -4,7 +4,7 @@ library flutter_page_indicator;
 
 import 'package:flutter/material.dart';
 
-import '../transformer_page_view/transformer_page_view.dart';
+import '../../card_swiper.dart';
 
 class WarmPainter extends BasePainter {
   WarmPainter(PageIndicator widget, double page, int index, Paint paint)
