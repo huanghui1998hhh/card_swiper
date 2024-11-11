@@ -403,18 +403,19 @@ class _CustomLayoutSwiper extends _SubSwiper {
     Axis? scrollDirection,
     required SwiperController controller,
   }) : super(
-            loop: loop,
-            onIndexChanged: onIndexChanged,
-            itemWidth: itemWidth,
-            itemHeight: itemHeight,
-            key: key,
-            itemBuilder: itemBuilder,
-            curve: curve,
-            duration: duration,
-            index: index,
-            itemCount: itemCount,
-            controller: controller,
-            scrollDirection: scrollDirection);
+          loop: loop,
+          onIndexChanged: onIndexChanged,
+          itemWidth: itemWidth,
+          itemHeight: itemHeight,
+          key: key,
+          itemBuilder: itemBuilder,
+          curve: curve,
+          duration: duration,
+          index: index,
+          itemCount: itemCount,
+          controller: controller,
+          scrollDirection: scrollDirection,
+        );
 
   final CustomLayoutOption option;
 
@@ -444,9 +445,10 @@ class _CustomLayoutState extends _CustomLayoutStateBase<_CustomLayoutSwiper> {
     final builders = widget.option.builders;
 
     Widget child = SizedBox(
-        width: widget.itemWidth ?? double.infinity,
-        height: widget.itemHeight ?? double.infinity,
-        child: widget.itemBuilder!(context, realIndex));
+      width: widget.itemWidth ?? double.infinity,
+      height: widget.itemHeight ?? double.infinity,
+      child: widget.itemBuilder!(context, realIndex),
+    );
 
     for (var i = builders.length - 1; i >= 0; --i) {
       final builder = builders[i];

@@ -49,7 +49,7 @@ class FractionPaginationBuilder extends SwiperPlugin {
           Text(
             '${config.itemCount}',
             style: TextStyle(color: color, fontSize: fontSize),
-          )
+          ),
         ],
       );
     } else {
@@ -64,7 +64,7 @@ class FractionPaginationBuilder extends SwiperPlugin {
           Text(
             ' / ${config.itemCount}',
             style: TextStyle(color: color, fontSize: fontSize),
-          )
+          ),
         ],
       );
     }
@@ -118,15 +118,17 @@ class RectSwiperPaginationBuilder extends SwiperPlugin {
     for (var i = 0; i < itemCount; ++i) {
       final active = i == activeIndex;
       final size = active ? activeSize : this.size;
-      list.add(SizedBox(
-        width: size.width,
-        height: size.height,
-        child: Container(
-          color: active ? activeColor : color,
-          key: Key('pagination_$i'),
-          margin: EdgeInsets.all(space),
+      list.add(
+        SizedBox(
+          width: size.width,
+          height: size.height,
+          child: Container(
+            color: active ? activeColor : color,
+            key: Key('pagination_$i'),
+            margin: EdgeInsets.all(space),
+          ),
         ),
-      ));
+      );
     }
 
     if (config.scrollDirection == Axis.vertical) {
@@ -209,17 +211,19 @@ class DotSwiperPaginationBuilder extends SwiperPlugin {
 
     for (var i = 0; i < itemCount; ++i) {
       final active = i == activeIndex;
-      list.add(Container(
-        key: Key('pagination_$i'),
-        margin: EdgeInsets.all(space),
-        child: ClipOval(
-          child: Container(
-            color: active ? activeColor : color,
-            width: active ? activeSize : size,
-            height: active ? activeSize : size,
+      list.add(
+        Container(
+          key: Key('pagination_$i'),
+          margin: EdgeInsets.all(space),
+          child: ClipOval(
+            child: Container(
+              color: active ? activeColor : color,
+              width: active ? activeSize : size,
+              height: active ? activeSize : size,
+            ),
           ),
         ),
-      ));
+      );
     }
 
     if (config.scrollDirection == Axis.vertical) {

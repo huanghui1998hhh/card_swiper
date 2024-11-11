@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FormWidget extends StatelessWidget {
-  final String label;
-
-  final Widget child;
-
   const FormWidget({
     Key? key,
     required this.label,
     required this.child,
   }) : super(key: key);
+  final String label;
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class FormWidget extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: child,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -32,11 +31,6 @@ class FormWidget extends StatelessWidget {
 }
 
 class FormSelect<T> extends StatefulWidget {
-  final String placeholder;
-  final ValueChanged<T> valueChanged;
-  final List<T> values;
-  final T value;
-
   const FormSelect({
     Key? key,
     required this.placeholder,
@@ -44,6 +38,10 @@ class FormSelect<T> extends StatefulWidget {
     required this.value,
     required this.values,
   }) : super(key: key);
+  final String placeholder;
+  final ValueChanged<T> valueChanged;
+  final List<T> values;
+  final T value;
 
   @override
   State<StatefulWidget> createState() {
@@ -73,61 +71,57 @@ class _FormSelectState<T> extends State<FormSelect<T>> {
 
     return InkWell(
       child: Text(
-          _selectedIndex < 0 ? placeholder : values[_selectedIndex].toString()),
+        _selectedIndex < 0 ? placeholder : values[_selectedIndex].toString(),
+      ),
       onTap: () {
         _selectedIndex = 0;
-        showBottomSheet<dynamic>(
-            context: context,
-            builder: (context) {
-              return SizedBox(
-                height: values.length * 30.0 + 200.0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SizedBox(
-                      height: values.length * 30.0 + 70.0,
-                      child: CupertinoPicker(
-                        itemExtent: 30.0,
-                        children: values.map((value) {
-                          return Text(value.toString());
-                        }).toList(),
-                        onSelectedItemChanged: (index) {
-                          _selectedIndex = index;
-                        },
-                      ),
+        showBottomSheet(
+          context: context,
+          builder: (context) {
+            return SizedBox(
+              height: values.length * 30.0 + 200.0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    height: values.length * 30.0 + 70.0,
+                    child: CupertinoPicker(
+                      itemExtent: 30.0,
+                      children: values.map((value) {
+                        return Text(value.toString());
+                      }).toList(),
+                      onSelectedItemChanged: (index) {
+                        _selectedIndex = index;
+                      },
                     ),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_selectedIndex >= 0) {
-                            widget.valueChanged(
-                              widget.values[_selectedIndex],
-                            );
-                          }
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_selectedIndex >= 0) {
+                          widget.valueChanged(
+                            widget.values[_selectedIndex],
+                          );
+                        }
 
-                          setState(() {});
+                        setState(() {});
 
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('ok'),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            });
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('ok'),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
       },
     );
   }
 }
 
 class NumberPad extends StatelessWidget {
-  final num number;
-  final num step;
-  final num max;
-  final num min;
-  final ValueChanged<num> onChangeValue;
-
   const NumberPad({
     Key? key,
     required this.number,
@@ -136,6 +130,11 @@ class NumberPad extends StatelessWidget {
     required this.max,
     required this.min,
   }) : super(key: key);
+  final num number;
+  final num step;
+  final num max;
+  final num min;
+  final ValueChanged<num> onChangeValue;
 
   void onAdd() {
     onChangeValue(number + step > max ? max : number + step);
@@ -155,7 +154,7 @@ class NumberPad extends StatelessWidget {
           number is int ? number.toString() : number.toStringAsFixed(1),
           style: const TextStyle(fontSize: 14.0),
         ),
-        IconButton(icon: const Icon(Icons.exposure_plus_1), onPressed: onAdd)
+        IconButton(icon: const Icon(Icons.exposure_plus_1), onPressed: onAdd),
       ],
     );
   }

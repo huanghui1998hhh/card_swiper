@@ -39,7 +39,9 @@ class ColorPainter extends CustomPainter {
 
         _paint.color = Color((alpha << 24) | color);
         canvas.drawRect(
-            Rect.fromLTWH(0.0, 0.0, size.width, size.height), _paint);
+          Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+          _paint,
+        );
       }
     } else {
       if (index > 0) {
@@ -57,7 +59,9 @@ class ColorPainter extends CustomPainter {
 
         _paint.color = Color((alpha << 24) | color);
         canvas.drawRect(
-            Rect.fromLTWH(0.0, 0.0, size.width, size.height), _paint);
+          Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+          _paint,
+        );
       }
     }
   }

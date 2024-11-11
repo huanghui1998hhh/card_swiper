@@ -41,6 +41,7 @@ class Swiper extends StatefulWidget {
 
     ///
     this.transformer,
+    this.transformerPageController,
     required this.itemCount,
     this.autoplay = false,
     this.layout = SwiperLayout.DEFAULT,
@@ -77,14 +78,15 @@ class Swiper extends StatefulWidget {
           'itemBuilder and transformItemBuilder must not be both null',
         ),
         assert(
-            !loop ||
-                ((loop &&
-                        layout == SwiperLayout.DEFAULT &&
-                        (indicatorLayout == PageIndicatorLayout.SCALE ||
-                            indicatorLayout == PageIndicatorLayout.COLOR ||
-                            indicatorLayout == PageIndicatorLayout.NONE)) ||
-                    (loop && layout != SwiperLayout.DEFAULT)),
-            'Only support `PageIndicatorLayout.SCALE` and `PageIndicatorLayout.COLOR`when layout==SwiperLayout.DEFAULT in loop mode'),
+          !loop ||
+              ((loop &&
+                      layout == SwiperLayout.DEFAULT &&
+                      (indicatorLayout == PageIndicatorLayout.SCALE ||
+                          indicatorLayout == PageIndicatorLayout.COLOR ||
+                          indicatorLayout == PageIndicatorLayout.NONE)) ||
+                  (loop && layout != SwiperLayout.DEFAULT)),
+          'Only support `PageIndicatorLayout.SCALE` and `PageIndicatorLayout.COLOR`when layout==SwiperLayout.DEFAULT in loop mode',
+        ),
         super(key: key);
 
   factory Swiper.children({
@@ -176,6 +178,8 @@ class Swiper extends StatefulWidget {
   /// Support transform like Android PageView did
   /// `itemBuilder` and `transformItemBuilder` must have one not null
   final PageTransformer? transformer;
+
+  final TransformerPageController? transformerPageController;
 
   /// count of the display items
   final int itemCount;
@@ -393,7 +397,6 @@ abstract class _SwiperTimerMixin extends State<Swiper> {
 
   Future<void> _onTimer(Timer timer) async {
     return _controller.next(
-      animation: true,
       needToResetTimer: false,
     );
   }
@@ -422,13 +425,14 @@ class _SwiperState extends _SwiperTimerMixin {
     super.initState();
     _activeIndex = widget.index ?? widget.controller?.index ?? 0;
     if (_isPageViewLayout()) {
-      _pageController = TransformerPageController(
-        initialPage: widget.index ?? widget.controller?.index ?? 0,
-        loop: widget.loop,
-        itemCount: widget.itemCount,
-        reverse: widget.transformer?.reverse ?? false,
-        viewportFraction: widget.viewportFraction,
-      );
+      _pageController = widget.transformerPageController ??
+          TransformerPageController(
+            initialPage: widget.index ?? widget.controller?.index ?? 0,
+            loop: widget.loop,
+            itemCount: widget.itemCount,
+            reverse: widget.transformer?.reverse ?? false,
+            viewportFraction: widget.viewportFraction,
+          );
     }
   }
 
@@ -452,14 +456,17 @@ class _SwiperState extends _SwiperTimerMixin {
               widget.loop != oldWidget.loop ||
               widget.itemCount != oldWidget.itemCount ||
               widget.viewportFraction != oldWidget.viewportFraction ||
-              _getReverse(widget) != _getReverse(oldWidget))) {
-        _pageController = TransformerPageController(
-          initialPage: widget.index ?? widget.controller?.index ?? 0,
-          loop: widget.loop,
-          itemCount: widget.itemCount,
-          reverse: _getReverse(widget),
-          viewportFraction: widget.viewportFraction,
-        );
+              _getReverse(widget) != _getReverse(oldWidget)) ||
+          widget.transformerPageController !=
+              oldWidget.transformerPageController) {
+        _pageController = widget.transformerPageController ??
+            TransformerPageController(
+              initialPage: widget.index ?? widget.controller?.index ?? 0,
+              loop: widget.loop,
+              itemCount: widget.itemCount,
+              reverse: _getReverse(widget),
+              viewportFraction: widget.viewportFraction,
+            );
       }
     } else {
       scheduleMicrotask(() {
@@ -643,9 +650,10 @@ class _SwiperState extends _SwiperTimerMixin {
       config = _ensureConfig(config);
       if (widget.outer) {
         return _buildOuterPagination(
-            widget.pagination! as SwiperPagination,
-            listForStack == null ? swiper : Stack(children: listForStack),
-            config);
+          widget.pagination! as SwiperPagination,
+          listForStack == null ? swiper : Stack(children: listForStack),
+          config,
+        );
       } else {
         listForStack = _ensureListForStack(
           swiper: swiper,
@@ -677,10 +685,11 @@ class _SwiperState extends _SwiperTimerMixin {
       list.add(Expanded(child: swiper));
     }
 
-    list.add(Align(
-      alignment: Alignment.center,
-      child: pagination.build(context, config),
-    ));
+    list.add(
+      Align(
+        child: pagination.build(context, config),
+      ),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -749,18 +758,19 @@ class _TinderSwiper extends _SubSwiper {
     Axis? scrollDirection,
   })  : assert(itemWidth != null && itemHeight != null),
         super(
-            loop: loop,
-            key: key,
-            itemWidth: itemWidth,
-            itemHeight: itemHeight,
-            itemBuilder: itemBuilder,
-            curve: curve,
-            duration: duration,
-            controller: controller,
-            index: index,
-            onIndexChanged: onIndexChanged,
-            itemCount: itemCount,
-            scrollDirection: scrollDirection);
+          loop: loop,
+          key: key,
+          itemWidth: itemWidth,
+          itemHeight: itemHeight,
+          itemBuilder: itemBuilder,
+          curve: curve,
+          duration: duration,
+          controller: controller,
+          index: index,
+          onIndexChanged: onIndexChanged,
+          itemCount: itemCount,
+          scrollDirection: scrollDirection,
+        );
 
   @override
   State<StatefulWidget> createState() {

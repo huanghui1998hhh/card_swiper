@@ -50,19 +50,19 @@ class _InnerSwiperState extends State<InnerSwiper> {
           return Column(
             children: <Widget>[
               SizedBox(
+                height: 300.0,
                 child: Swiper(
                   controller: controllers[index],
                   pagination: const SwiperPagination(),
                   itemCount: 4,
                   itemBuilder: (context, index) {
-                    return Container(
+                    return const ColoredBox(
                       color: Colors.greenAccent,
-                      child: const Text('jkfjkldsfjd'),
+                      child: Text('jkfjkldsfjd'),
                     );
                   },
                   autoplay: autoPlayer[index],
                 ),
-                height: 300.0,
               ),
               ElevatedButton(
                 onPressed: () {
@@ -80,7 +80,7 @@ class _InnerSwiperState extends State<InnerSwiper> {
                 },
                 child: const Text('End autoplay'),
               ),
-              Text('is autoplay: ${autoPlayer[index]}')
+              Text('is autoplay: ${autoPlayer[index]}'),
             ],
           );
         },

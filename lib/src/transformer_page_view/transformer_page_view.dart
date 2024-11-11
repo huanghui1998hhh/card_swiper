@@ -110,10 +110,15 @@ class TransformerPageController extends PageController {
     this.itemCount = 0,
     this.reverse = false,
   }) : super(
-            initialPage: TransformerPageController._getRealIndexFromRenderIndex(
-                initialPage, loop, itemCount, reverse),
-            keepPage: keepPage,
-            viewportFraction: viewportFraction);
+          initialPage: TransformerPageController._getRealIndexFromRenderIndex(
+            initialPage,
+            loop,
+            itemCount,
+            reverse,
+          ),
+          keepPage: keepPage,
+          viewportFraction: viewportFraction,
+        );
 
   final bool loop;
   final int itemCount;
@@ -189,7 +194,11 @@ class TransformerPageController extends PageController {
   }
 
   static int _getRealIndexFromRenderIndex(
-      num index, bool loop, int itemCount, bool reverse) {
+    num index,
+    bool loop,
+    int itemCount,
+    bool reverse,
+  ) {
     var result = reverse ? itemCount - index - 1 as int : index as int;
     if (loop) {
       result += kMiddleValue;
@@ -375,42 +384,42 @@ class _TransformerPageViewState extends State<TransformerPageView> {
 
   Widget _buildItem(BuildContext context, int index) {
     return AnimatedBuilder(
-        animation: _pageController,
-        builder: (c, w) {
-          final renderIndex =
-              _pageController.getRenderIndexFromRealIndex(index);
-          final child = widget.itemBuilder?.call(context, renderIndex) ??
-              const SizedBox.shrink();
-          if (_size == null) {
-            return child;
-          }
+      animation: _pageController,
+      builder: (c, w) {
+        final renderIndex = _pageController.getRenderIndexFromRealIndex(index);
+        final child = widget.itemBuilder?.call(context, renderIndex) ??
+            const SizedBox.shrink();
+        if (_size == null) {
+          return child;
+        }
 
-          double position;
+        double position;
 
-          final page = _pageController.realPage;
-          if (_transformer!.reverse) {
-            position = page - index;
-          } else {
-            position = index - page;
-          }
-          position *= widget.viewportFraction;
+        final page = _pageController.realPage;
+        if (_transformer!.reverse) {
+          position = page - index;
+        } else {
+          position = index - page;
+        }
+        position *= widget.viewportFraction;
 
-          final info = TransformInfo(
-            index: renderIndex,
-            width: _size!.width,
-            height: _size!.height,
-            position: position.clamp(-1.0, 1.0),
-            activeIndex:
-                _pageController.getRenderIndexFromRealIndex(_activeIndex),
-            fromIndex: _fromIndex,
-            forward: _pageController.position.pixels - _currentPixels >= 0,
-            done: _done,
-            scrollDirection: widget.scrollDirection,
-            viewportFraction: widget.viewportFraction,
-          );
+        final info = TransformInfo(
+          index: renderIndex,
+          width: _size!.width,
+          height: _size!.height,
+          position: position.clamp(-1.0, 1.0),
+          activeIndex:
+              _pageController.getRenderIndexFromRealIndex(_activeIndex),
+          fromIndex: _fromIndex,
+          forward: _pageController.position.pixels - _currentPixels >= 0,
+          done: _done,
+          scrollDirection: widget.scrollDirection,
+          viewportFraction: widget.viewportFraction,
+        );
 
-          return _transformer!.transform(child, info);
-        });
+        return _transformer!.transform(child, info);
+      },
+    );
   }
 
   double? _calcCurrentPixels() {
@@ -531,11 +540,13 @@ class _TransformerPageViewState extends State<TransformerPageView> {
       if (!created) {
         final initPage = _pageController.getRealIndexFromRenderIndex(index);
         if (_pageController.hasClients) {
-          unawaited(_pageController.animateToPage(
-            initPage,
-            duration: widget.duration,
-            curve: widget.curve,
-          ));
+          unawaited(
+            _pageController.animateToPage(
+              initPage,
+              duration: widget.duration,
+              curve: widget.curve,
+            ),
+          );
         }
       }
     }

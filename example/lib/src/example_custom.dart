@@ -55,21 +55,22 @@ class _ExampleCustomState extends State<ExampleCustom> {
 
   Widget _buildItem(BuildContext context, int index) {
     return ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(_radius)),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              images[index % images.length],
-              fit: BoxFit.fill,
-            ),
-            Text(
-              index.toString(),
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 25),
-            )
-          ],
-        ));
+      borderRadius: BorderRadius.all(Radius.circular(_radius)),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            images[index % images.length],
+            fit: BoxFit.fill,
+          ),
+          Text(
+            index.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 25),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -122,16 +123,18 @@ class _ExampleCustomState extends State<ExampleCustom> {
   Widget buildSwiper() {
     return Swiper(
       onTap: (index) {
-        Navigator.of(context).push(MaterialPageRoute<Object>(
-          builder: (context) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('New page'),
-              ),
-              body: Container(),
-            );
-          },
-        ));
+        Navigator.of(context).push(
+          MaterialPageRoute<Object>(
+            builder: (context) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: const Text('New page'),
+                ),
+                body: Container(),
+              );
+            },
+          ),
+        );
       },
       customLayoutOption: customLayoutOption,
       fade: _fade,
@@ -159,8 +162,12 @@ class _ExampleCustomState extends State<ExampleCustom> {
       indicatorLayout: PageIndicatorLayout.COLOR,
       autoplayDisableOnInteraction: _autoplayDisableOnInteraction,
       pagination: const SwiperPagination(
-          builder: DotSwiperPaginationBuilder(
-              size: 20.0, activeSize: 20.0, space: 10.0)),
+        builder: DotSwiperPaginationBuilder(
+          size: 20.0,
+          activeSize: 20.0,
+          space: 10.0,
+        ),
+      ),
     );
   }
 
@@ -168,7 +175,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
+        ColoredBox(
           color: Colors.black87,
           child: SizedBox(
             height: 300.0,
@@ -184,20 +191,21 @@ class _ExampleCustomState extends State<ExampleCustom> {
                 children: <Widget>[
                   ElevatedButton(
                     onPressed: () {
-                      _controller.previous(animation: true);
+                      _controller.previous();
                     },
                     child: const Text('Prev'),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _controller.next(animation: true);
+                      _controller.next();
                     },
                     child: const Text('Next'),
                   ),
                   Expanded(
-                      child: TextField(
-                    controller: numberController,
-                  )),
+                    child: TextField(
+                      controller: numberController,
+                    ),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       final text = numberController.text;
@@ -218,7 +226,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                     SwiperLayout.DEFAULT,
                     SwiperLayout.STACK,
                     SwiperLayout.TINDER,
-                    SwiperLayout.CUSTOM
+                    SwiperLayout.CUSTOM,
                   ],
                   valueChanged: (value) {
                     _layout = value;
@@ -229,44 +237,54 @@ class _ExampleCustomState extends State<ExampleCustom> {
               FormWidget(
                 label: 'scrollDirection',
                 child: Switch(
-                    value: _scrollDirection == Axis.horizontal,
-                    onChanged: (value) => setState(() => _scrollDirection =
-                        value ? Axis.horizontal : Axis.vertical)),
+                  value: _scrollDirection == Axis.horizontal,
+                  onChanged: (value) => setState(
+                    () => _scrollDirection =
+                        value ? Axis.horizontal : Axis.vertical,
+                  ),
+                ),
               ),
               if (_layout == SwiperLayout.STACK)
                 FormWidget(
                   label: 'axisDirection (left <-> right)',
                   child: Switch(
-                      value: _axisDirection == AxisDirection.right,
-                      onChanged: (value) => setState(() => _axisDirection =
-                          value ? AxisDirection.right : AxisDirection.left)),
+                    value: _axisDirection == AxisDirection.right,
+                    onChanged: (value) => setState(
+                      () => _axisDirection =
+                          value ? AxisDirection.right : AxisDirection.left,
+                    ),
+                  ),
                 ),
               FormWidget(
                 label: 'autoplayDisableOnInteraction',
                 child: Switch(
-                    value: _autoplayDisableOnInteraction,
-                    onChanged: (value) =>
-                        setState(() => _autoplayDisableOnInteraction = value)),
+                  value: _autoplayDisableOnInteraction,
+                  onChanged: (value) =>
+                      setState(() => _autoplayDisableOnInteraction = value),
+                ),
               ),
               //Pannel Begin
               FormWidget(
                 label: 'loop',
                 child: Switch(
-                    value: _loop,
-                    onChanged: (value) => setState(() => _loop = value)),
+                  value: _loop,
+                  onChanged: (value) => setState(() => _loop = value),
+                ),
               ),
               FormWidget(
                 label: 'outer',
                 child: Switch(
-                    value: _outer,
-                    onChanged: (value) => setState(() => _outer = value)),
+                  value: _outer,
+                  onChanged: (value) => setState(() => _outer = value),
+                ),
               ),
               //Pannel Begin
               FormWidget(
                 label: 'autoplay',
                 child: Switch(
-                    value: _autoplay,
-                    onChanged: (value) => setState(() => _autoplay = value)),
+                  value: _autoplay,
+                  onChanged: (value) => setState(() => _autoplay = value),
+                ),
               ),
 
               FormWidget(
@@ -361,7 +379,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
                     Curves.bounceInOut,
                     Curves.bounceOut,
                     Curves.bounceIn,
-                    Curves.fastOutSlowIn
+                    Curves.fastOutSlowIn,
                   ],
                   valueChanged: (value) {
                     _curve = value;
@@ -371,7 +389,7 @@ class _ExampleCustomState extends State<ExampleCustom> {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

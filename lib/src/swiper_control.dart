@@ -1,5 +1,6 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+
+import '../card_swiper.dart';
 
 class SwiperControl extends SwiperPlugin {
   const SwiperControl({
@@ -43,21 +44,23 @@ class SwiperControl extends SwiperPlugin {
       behavior: HitTestBehavior.opaque,
       onTap: () async {
         if (previous) {
-          await config!.controller.previous(animation: true);
+          await config!.controller.previous();
         } else {
-          await config!.controller.next(animation: true);
+          await config!.controller.next();
         }
       },
       child: Padding(
-          padding: padding,
-          child: RotatedBox(
-              quarterTurns: quarterTurns,
-              child: Icon(
-                iconData,
-                semanticLabel: previous ? 'Previous' : 'Next',
-                size: size,
-                color: color,
-              ))),
+        padding: padding,
+        child: RotatedBox(
+          quarterTurns: quarterTurns,
+          child: Icon(
+            iconData,
+            semanticLabel: previous ? 'Previous' : 'Next',
+            size: size,
+            color: color,
+          ),
+        ),
+      ),
     );
   }
 
@@ -98,7 +101,7 @@ class SwiperControl extends SwiperPlugin {
             iconData: iconNext,
             quarterTurns: 0,
             previous: false,
-          )
+          ),
         ],
       );
     } else {
@@ -119,7 +122,7 @@ class SwiperControl extends SwiperPlugin {
             iconData: iconNext,
             quarterTurns: -3,
             previous: false,
-          )
+          ),
         ],
       );
     }

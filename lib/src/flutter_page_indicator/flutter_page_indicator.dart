@@ -23,14 +23,16 @@ class WarmPainter extends BasePainter {
 
       final left = index * distance + distance * (progress - 0.5) * 2;
       canvas.drawRRect(
-          RRect.fromLTRBR(left, 0.0, right, size, Radius.circular(radius)),
-          _paint);
+        RRect.fromLTRBR(left, 0.0, right, size, Radius.circular(radius)),
+        _paint,
+      );
     } else {
       final right = start + size + distance * progress * 2;
 
       canvas.drawRRect(
-          RRect.fromLTRBR(start, 0.0, right, size, Radius.circular(radius)),
-          _paint);
+        RRect.fromLTRBR(start, 0.0, right, size, Radius.circular(radius)),
+        _paint,
+      );
     }
   }
 }
@@ -49,10 +51,13 @@ class DropPainter extends BasePainter {
     //lerp(begin, end, progress)
 
     canvas.drawCircle(
-        Offset(radius + ((page) * (size + space)),
-            radius - dropHeight * (1 - rate)),
-        radius * (scale + rate * (1.0 - scale)),
-        _paint);
+      Offset(
+        radius + (page * (size + space)),
+        radius - dropHeight * (1 - rate),
+      ),
+      radius * (scale + rate * (1.0 - scale)),
+      _paint,
+    );
   }
 }
 
@@ -71,7 +76,10 @@ class NonePainter extends BasePainter {
       canvas.drawCircle(Offset(secondOffset, radius), radius, _paint);
     } else {
       canvas.drawCircle(
-          Offset(radius + (index * (size + space)), radius), radius, _paint);
+        Offset(radius + (index * (size + space)), radius),
+        radius,
+        _paint,
+      );
     }
   }
 }
@@ -83,7 +91,10 @@ class SlidePainter extends BasePainter {
   @override
   void draw(Canvas canvas, double space, double size, double radius) {
     canvas.drawCircle(
-        Offset(radius + (page * (size + space)), radius), radius, _paint);
+      Offset(radius + (page * (size + space)), radius),
+      radius,
+      _paint,
+    );
   }
 }
 
@@ -96,7 +107,7 @@ class ScalePainter extends BasePainter {
     if (this.index == widget.count - 1) {
       return index == 0 || index == this.index;
     }
-    return (index == this.index || index == this.index + 1);
+    return index == this.index || index == this.index + 1;
   }
 
   @override
@@ -110,8 +121,11 @@ class ScalePainter extends BasePainter {
       if (_shouldSkip(i)) {
         continue;
       }
-      canvas.drawCircle(Offset(i * (size + space) + radius, radius),
-          radius * widget.scale, _paint);
+      canvas.drawCircle(
+        Offset(i * (size + space) + radius, radius),
+        radius * widget.scale,
+        _paint,
+      );
     }
 
     _paint.color = widget.activeColor;
@@ -127,12 +141,18 @@ class ScalePainter extends BasePainter {
     final progress = page - index;
     _paint.color = Color.lerp(widget.activeColor, widget.color, progress)!;
     //last
-    canvas.drawCircle(Offset(radius + (index * (size + space)), radius),
-        lerp(radius, radius * widget.scale, progress), _paint);
+    canvas.drawCircle(
+      Offset(radius + (index * (size + space)), radius),
+      lerp(radius, radius * widget.scale, progress),
+      _paint,
+    );
     //first
     _paint.color = Color.lerp(widget.color, widget.activeColor, progress)!;
-    canvas.drawCircle(Offset(secondOffset, radius),
-        lerp(radius * widget.scale, radius, progress), _paint);
+    canvas.drawCircle(
+      Offset(secondOffset, radius),
+      lerp(radius * widget.scale, radius, progress),
+      _paint,
+    );
   }
 }
 
@@ -145,7 +165,7 @@ class ColorPainter extends BasePainter {
     if (this.index == widget.count - 1) {
       return index == 0 || index == this.index;
     }
-    return (index == this.index || index == this.index + 1);
+    return index == this.index || index == this.index + 1;
   }
 
   @override
@@ -158,7 +178,10 @@ class ColorPainter extends BasePainter {
     _paint.color = Color.lerp(widget.activeColor, widget.color, progress)!;
     //left
     canvas.drawCircle(
-        Offset(radius + (index * (size + space)), radius), radius, _paint);
+      Offset(radius + (index * (size + space)), radius),
+      radius,
+      _paint,
+    );
     //right
     _paint.color = Color.lerp(widget.color, widget.activeColor, progress)!;
     canvas.drawCircle(Offset(secondOffset, radius), radius, _paint);
@@ -197,7 +220,10 @@ abstract class BasePainter extends CustomPainter {
         continue;
       }
       canvas.drawCircle(
-          Offset(i * (size + space) + radius, radius), radius, _paint);
+        Offset(i * (size + space) + radius, radius),
+        radius,
+        _paint,
+      );
     }
 
     var page = this.page;
@@ -233,7 +259,7 @@ class _PageIndicatorState extends State<PageIndicator> {
         return ScalePainter(widget, page, index, _paint);
       case PageIndicatorLayout.DROP:
         return DropPainter(widget, page, index, _paint);
-      default:
+      case null:
         throw Exception('Not a valid layout');
     }
   }

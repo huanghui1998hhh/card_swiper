@@ -14,24 +14,32 @@ void main() {
     );
 
     final key = UniqueKey();
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(body: Builder(builder: (context) {
-        return DotSwiperPaginationBuilder(
-          key: key,
-          activeColor: const Color(0xff000000),
-          color: const Color(0xffffffff),
-          space: 10.0,
-          size: 10.0,
-          activeSize: 20.0,
-        ).build(context, config);
-      })),
-    ));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (context) {
+              return DotSwiperPaginationBuilder(
+                key: key,
+                activeColor: const Color(0xff000000),
+                color: const Color(0xffffffff),
+                space: 10.0,
+                activeSize: 20.0,
+              ).build(context, config);
+            },
+          ),
+        ),
+      ),
+    );
 
     for (var i = 0; i < 10; ++i) {
-      expect(find.byWidgetPredicate((widget) {
-        final key = widget.key;
-        return key != null && key is ValueKey && key.value == 'pagination_$i';
-      }), findsOneWidget);
+      expect(
+        find.byWidgetPredicate((widget) {
+          final key = widget.key;
+          return key != null && key is ValueKey && key.value == 'pagination_$i';
+        }),
+        findsOneWidget,
+      );
     }
 
     expect(find.byKey(key), findsOneWidget);
@@ -48,24 +56,32 @@ void main() {
     );
 
     final key = UniqueKey();
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(body: Builder(builder: (context) {
-        return DotSwiperPaginationBuilder(
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (context) {
+              return DotSwiperPaginationBuilder(
                 key: key,
                 activeColor: const Color(0xff000000),
                 color: const Color(0xffffffff),
                 space: 10.0,
-                size: 10.0,
-                activeSize: 20.0)
-            .build(context, config);
-      })),
-    ));
+                activeSize: 20.0,
+              ).build(context, config);
+            },
+          ),
+        ),
+      ),
+    );
 
     for (var i = 0; i < 10; ++i) {
-      expect(find.byWidgetPredicate((widget) {
-        final key = widget.key;
-        return key != null && key is ValueKey && key.value == 'pagination_$i';
-      }), findsOneWidget);
+      expect(
+        find.byWidgetPredicate((widget) {
+          final key = widget.key;
+          return key != null && key is ValueKey && key.value == 'pagination_$i';
+        }),
+        findsOneWidget,
+      );
     }
 
     expect(find.byKey(key), findsOneWidget);
@@ -75,21 +91,28 @@ void main() {
     final controller = SwiperController();
 
     final config = SwiperPluginConfig(
-        activeIndex: 0,
-        controller: controller,
-        itemCount: 10,
-        scrollDirection: Axis.horizontal);
+      activeIndex: 0,
+      controller: controller,
+      itemCount: 10,
+      scrollDirection: Axis.horizontal,
+    );
 
     final Key key = UniqueKey();
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(body: Builder(builder: (context) {
-        return FractionPaginationBuilder(
-          key: key,
-          activeColor: const Color(0xff000000),
-          color: const Color(0xffffffff),
-        ).build(context, config);
-      })),
-    ));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (context) {
+              return FractionPaginationBuilder(
+                key: key,
+                activeColor: const Color(0xff000000),
+                color: const Color(0xffffffff),
+              ).build(context, config);
+            },
+          ),
+        ),
+      ),
+    );
 
     expect(find.text('1'), findsOneWidget);
     expect(find.text(' / 10'), findsOneWidget);
@@ -108,15 +131,21 @@ void main() {
     );
 
     final Key key = UniqueKey();
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(body: Builder(builder: (context) {
-        return FractionPaginationBuilder(
-          key: key,
-          activeColor: const Color(0xff000000),
-          color: const Color(0xffffffff),
-        ).build(context, config);
-      })),
-    ));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (context) {
+              return FractionPaginationBuilder(
+                key: key,
+                activeColor: const Color(0xff000000),
+                color: const Color(0xffffffff),
+              ).build(context, config);
+            },
+          ),
+        ),
+      ),
+    );
 
     expect(find.text('1'), findsOneWidget);
     expect(find.text('10'), findsOneWidget);

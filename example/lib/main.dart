@@ -35,13 +35,13 @@ class MyApp extends StatelessWidget {
         '/example04': (context) => const ExampleCustomPagination(),
         '/example05': (context) => const ExamplePhone(),
         '/example06': (context) => const ScaffoldWidget(
-              child: ExampleSwiperInScrollView(),
               title: 'ScrollView',
+              child: ExampleSwiperInScrollView(),
             ),
         '/example07': (context) => const ScaffoldWidget(
-              child: ExampleCustom(),
               title: 'Custom All',
-            )
+              child: ExampleCustom(),
+            ),
       },
     );
   }
@@ -53,7 +53,7 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -67,14 +67,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildListTile(
-      BuildContext context, String title, String subtitle, String url) {
+    BuildContext context,
+    String title,
+    String subtitle,
+    String url,
+  ) {
     return ListTile(
       onTap: () {
         Navigator.of(context).pushNamed(url);
       },
       isThreeLine: true,
       dense: false,
-      leading: null,
       title: Text(title),
       subtitle: Text(subtitle),
       trailing: const Icon(
@@ -100,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ['Custom Pagination', 'Custom Pagination', '/example04'],
           ['Phone', 'Phone view', '/example05'],
           ['ScrollView ', 'In a ScrollView', '/example06'],
-          ['Custom', 'Custom all properties', '/example07']
+          ['Custom', 'Custom all properties', '/example07'],
         ]),
       ),
     );
@@ -110,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
 const List<String> titles = [
   'Flutter Swiper is awesome',
   'Really nice',
-  'Yeah'
+  'Yeah',
 ];
 
 class ExampleHorizontal extends StatelessWidget {
@@ -146,22 +149,23 @@ class ExampleVertical extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('ExampleVertical'),
-        ),
-        body: Swiper(
-          itemBuilder: (context, index) {
-            return Image.asset(
-              images[index],
-              fit: BoxFit.fill,
-            );
-          },
-          autoplay: true,
-          itemCount: images.length,
-          scrollDirection: Axis.vertical,
-          pagination: const SwiperPagination(alignment: Alignment.centerRight),
-          control: const SwiperControl(),
-        ));
+      appBar: AppBar(
+        title: const Text('ExampleVertical'),
+      ),
+      body: Swiper(
+        itemBuilder: (context, index) {
+          return Image.asset(
+            images[index],
+            fit: BoxFit.fill,
+          );
+        },
+        autoplay: true,
+        itemCount: images.length,
+        scrollDirection: Axis.vertical,
+        pagination: const SwiperPagination(alignment: Alignment.centerRight),
+        control: const SwiperControl(),
+      ),
+    );
   }
 }
 
@@ -171,13 +175,13 @@ class ExampleFraction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('ExampleFraction'),
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-                child: Swiper(
+      appBar: AppBar(
+        title: const Text('ExampleFraction'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Swiper(
               itemBuilder: (context, index) {
                 return Image.asset(
                   images[index],
@@ -189,9 +193,10 @@ class ExampleFraction extends StatelessWidget {
               pagination:
                   const SwiperPagination(builder: SwiperPagination.fraction),
               control: const SwiperControl(),
-            )),
-            Expanded(
-                child: Swiper(
+            ),
+          ),
+          Expanded(
+            child: Swiper(
               itemBuilder: (context, index) {
                 return Image.asset(
                   images[index],
@@ -202,11 +207,14 @@ class ExampleFraction extends StatelessWidget {
               itemCount: images.length,
               scrollDirection: Axis.vertical,
               pagination: const SwiperPagination(
-                  alignment: Alignment.centerRight,
-                  builder: SwiperPagination.fraction),
-            ))
-          ],
-        ));
+                alignment: Alignment.centerRight,
+                builder: SwiperPagination.fraction,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -216,79 +224,85 @@ class ExampleCustomPagination extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Custom Pagination'),
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: Swiper(
-                itemBuilder: (context, index) {
-                  return Image.asset(
-                    images[index],
-                    fit: BoxFit.fill,
-                  );
-                },
-                autoplay: true,
-                itemCount: images.length,
-                pagination: SwiperPagination(
-                    margin: EdgeInsets.zero,
-                    builder: SwiperCustomPagination(builder: (context, config) {
-                      return ConstrainedBox(
-                        child: Container(
-                          color: Colors.white,
-                          child: Text(
+      appBar: AppBar(
+        title: const Text('Custom Pagination'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Swiper(
+              itemBuilder: (context, index) {
+                return Image.asset(
+                  images[index],
+                  fit: BoxFit.fill,
+                );
+              },
+              autoplay: true,
+              itemCount: images.length,
+              pagination: SwiperPagination(
+                margin: EdgeInsets.zero,
+                builder: SwiperCustomPagination(
+                  builder: (context, config) {
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints.expand(height: 50.0),
+                      child: ColoredBox(
+                        color: Colors.white,
+                        child: Text(
+                          '${titles[config.activeIndex]} ${config.activeIndex + 1}/${config.itemCount}',
+                          style: const TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              control: const SwiperControl(),
+            ),
+          ),
+          Expanded(
+            child: Swiper(
+              itemBuilder: (context, index) {
+                return Image.asset(
+                  images[index],
+                  fit: BoxFit.fill,
+                );
+              },
+              autoplay: true,
+              itemCount: images.length,
+              pagination: SwiperPagination(
+                margin: EdgeInsets.zero,
+                builder: SwiperCustomPagination(
+                  builder: (context, config) {
+                    return ConstrainedBox(
+                      constraints: const BoxConstraints.expand(height: 50.0),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
                             '${titles[config.activeIndex]} ${config.activeIndex + 1}/${config.itemCount}',
                             style: const TextStyle(fontSize: 20.0),
                           ),
-                        ),
-                        constraints: const BoxConstraints.expand(height: 50.0),
-                      );
-                    })),
-                control: const SwiperControl(),
-              ),
-            ),
-            Expanded(
-              child: Swiper(
-                itemBuilder: (context, index) {
-                  return Image.asset(
-                    images[index],
-                    fit: BoxFit.fill,
-                  );
-                },
-                autoplay: true,
-                itemCount: images.length,
-                pagination: SwiperPagination(
-                    margin: EdgeInsets.zero,
-                    builder: SwiperCustomPagination(builder: (context, config) {
-                      return ConstrainedBox(
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              '${titles[config.activeIndex]} ${config.activeIndex + 1}/${config.itemCount}',
-                              style: const TextStyle(fontSize: 20.0),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: const DotSwiperPaginationBuilder(
+                                color: Colors.black12,
+                                activeColor: Colors.black,
+                                activeSize: 20.0,
+                              ).build(context, config),
                             ),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: const DotSwiperPaginationBuilder(
-                                        color: Colors.black12,
-                                        activeColor: Colors.black,
-                                        size: 10.0,
-                                        activeSize: 20.0)
-                                    .build(context, config),
-                              ),
-                            )
-                          ],
-                        ),
-                        constraints: const BoxConstraints.expand(height: 50.0),
-                      );
-                    })),
-                control: const SwiperControl(color: Colors.redAccent),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-            )
-          ],
-        ));
+              control: const SwiperControl(color: Colors.redAccent),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -311,14 +325,15 @@ class ExamplePhone extends StatelessWidget {
             ),
           ),
           Swiper.children(
-            autoplay: false,
             pagination: const SwiperPagination(
-                margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30.0),
-                builder: DotSwiperPaginationBuilder(
-                    color: Colors.white30,
-                    activeColor: Colors.white,
-                    size: 20.0,
-                    activeSize: 20.0)),
+              margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 30.0),
+              builder: DotSwiperPaginationBuilder(
+                color: Colors.white30,
+                activeColor: Colors.white,
+                size: 20.0,
+                activeSize: 20.0,
+              ),
+            ),
             children: <Widget>[
               Image.asset(
                 'images/1.png',
@@ -328,9 +343,9 @@ class ExamplePhone extends StatelessWidget {
                 'images/2.png',
                 fit: BoxFit.contain,
               ),
-              Image.asset('images/3.png', fit: BoxFit.contain)
+              Image.asset('images/3.png', fit: BoxFit.contain),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -338,16 +353,15 @@ class ExamplePhone extends StatelessWidget {
 }
 
 class ScaffoldWidget extends StatelessWidget {
-  final Widget child;
-  final String title;
-  final List<Widget>? actions;
-
   const ScaffoldWidget({
     Key? key,
     required this.title,
     required this.child,
     this.actions,
   }) : super(key: key);
+  final Widget child;
+  final String title;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {

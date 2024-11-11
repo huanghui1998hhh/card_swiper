@@ -49,7 +49,6 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Swiper(
-          layout: SwiperLayout.DEFAULT,
           viewportFraction: 0.8,
           scale: 0.9,
           itemBuilder: (context, index) {
