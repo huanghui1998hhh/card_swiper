@@ -5,7 +5,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-import '../card_swiper.dart';
+import 'flutter_page_indicator/flutter_page_indicator.dart';
+import 'swiper_controller.dart';
+import 'swiper_pagination.dart';
+import 'swiper_plugin.dart';
+import 'transformer_page_view/index_controller.dart';
 import 'transformer_page_view/transformer_page_view.dart';
 
 part 'custom_layout.dart';
@@ -73,6 +77,7 @@ class Swiper extends StatefulWidget {
     this.scale,
     this.fade,
     this.allowImplicitScrolling = false,
+    this.pageSnapping = true,
   })  : assert(
           itemBuilder != null || transformer != null,
           'itemBuilder and transformItemBuilder must not be both null',
@@ -120,6 +125,7 @@ class Swiper extends StatefulWidget {
     double? fade,
     PageIndicatorLayout indicatorLayout = PageIndicatorLayout.NONE,
     SwiperLayout layout = SwiperLayout.DEFAULT,
+    bool pageSnapping = true,
   }) =>
       Swiper(
         fade: fade,
@@ -148,6 +154,7 @@ class Swiper extends StatefulWidget {
         control: control,
         controller: controller,
         loop: loop,
+        pageSnapping: pageSnapping,
         plugins: plugins,
         physics: physics,
         key: key,
@@ -235,6 +242,8 @@ class Swiper extends StatefulWidget {
   ///
   final double viewportFraction;
 
+  final bool pageSnapping;
+
   /// Build in layouts
   final SwiperLayout layout;
 
@@ -284,11 +293,13 @@ class Swiper extends StatefulWidget {
     double? fade,
     PageIndicatorLayout indicatorLayout = PageIndicatorLayout.NONE,
     SwiperLayout layout = SwiperLayout.DEFAULT,
+    bool pageSnapping = true,
   }) =>
       Swiper(
         fade: fade,
         indicatorLayout: indicatorLayout,
         layout: layout,
+        pageSnapping: pageSnapping,
         transformer: transformer,
         customLayoutOption: customLayoutOption,
         containerHeight: containerHeight,
@@ -521,6 +532,7 @@ class _SwiperState extends _SwiperTimerMixin {
       }
 
       final child = TransformerPageView(
+        pageSnapping: widget.pageSnapping,
         pageController: _pageController,
         loop: widget.loop,
         itemCount: widget.itemCount,
